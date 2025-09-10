@@ -1,0 +1,193 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Modèle User pour l'authentification NextAuth
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations NextAuth
+  accounts Account[]
+  sessions Session[]
+
+  // Relations métier
+  products      Product[]
+  transactions  Transaction[]
+  notifications Notification[]
+  notificationPreferences NotificationPreferences?
+
+  @@map("users")
+}
+
+// Modèles NextAuth requis
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+// Modèle Product pour la gestion des produits
+model Product {
+  id          String        @id @default(cuid())
+  name        String
+  description String?
+  category    Category
+  brand       String
+  size        String?
+  purchasePrice Float
+  sellingPrice  Float
+  status      ProductStatus @default(IN_STOCK)
+  soldAt      DateTime?     // Date de vente
+  imageUrl    String?
+  sku         String?       @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relations
+  userId       String
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+  notifications Notification[]
+
+  @@map("products")
+}
+
+// Modèle Transaction pour le suivi des ventes
+model Transaction {
+  id          String            @id @default(cuid())
+  type        TransactionType
+  amount      Float
+  quantity    Int               @default(1)
+  notes       String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  // Relations
+  userId      String
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId   String?
+  product     Product?          @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@map("transactions")
+}
+
+// Enums pour la typologie des données
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Category {
+  SNEAKERS
+  CLOTHING
+  ACCESSORIES
+  ELECTRONICS
+  COLLECTIBLES
+  OTHER
+}
+
+enum ProductStatus {
+  IN_STOCK
+  SOLD
+  RESERVED
+}
+
+enum TransactionType {
+  PURCHASE
+  SALE
+  REFUND
+  ADJUSTMENT
+}
+
+// Modèle Notification pour le système de notifications
+model Notification {
+  id          String           @id @default(cuid())
+  title       String
+  message     String
+  type        NotificationType
+  isRead      Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  // Relations
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId   String?          // Optionnel, pour les notifications liées à un produit
+  product     Product?         @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@map("notifications")
+}
+
+// Modèle NotificationPreferences pour les préférences utilisateur
+model NotificationPreferences {
+  id                    String  @id @default(cuid())
+  lowStockEnabled       Boolean @default(true)
+  newProductEnabled     Boolean @default(true)
+  saleCompletedEnabled  Boolean @default(true)
+  emailEnabled          Boolean @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Relations
+  userId                String  @unique
+  user                  User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notification_preferences")
+}
+
+// Enum pour les types de notifications
+enum NotificationType {
+  LOW_STOCK
+  NEW_PRODUCT
+  SALE_COMPLETED
+  SYSTEM
+}
