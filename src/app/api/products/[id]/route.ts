@@ -119,7 +119,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     }
 
     // Gérer automatiquement le champ soldAt
-    const updateData = { ...data }
+    const updateData: any = { ...data }
     
     // Si le statut passe à SOLD et qu'il n'y a pas encore de soldAt, définir la date actuelle
     if (data.status === 'SOLD' && !product.soldAt) {

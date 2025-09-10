@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { signIn, getSession, signOut } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
@@ -13,7 +13,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { toast } from 'sonner'
 import { Loader2, TrendingUp, ArrowLeft, Eye, EyeOff } from 'lucide-react'
 
-export default function SignInPage() {
+function SignInContent() {
   const [isLoading, setIsLoading] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
   const [isDemoLoading, setIsDemoLoading] = useState(false)
@@ -320,7 +320,7 @@ export default function SignInPage() {
                         <Checkbox 
                           id="remember" 
                           checked={rememberMe}
-                          onCheckedChange={setRememberMe}
+                          onCheckedChange={(checked) => setRememberMe(checked === true)}
                           className="h-3 w-3"
                         />
                         <Label htmlFor="remember" className="text-xs text-muted-foreground">
@@ -382,5 +382,13 @@ export default function SignInPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<div>Chargement...</div>}>
+      <SignInContent />
+    </Suspense>
   )
 }

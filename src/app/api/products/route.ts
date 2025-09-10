@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
       ...(filters.maxPrice && { sellingPrice: { lte: filters.maxPrice } }),
     }
 
-    const orderBy = pagination.sortBy 
+    const orderBy: any = pagination.sortBy 
       ? { [pagination.sortBy]: pagination.sortOrder }
       : { createdAt: 'desc' }
 

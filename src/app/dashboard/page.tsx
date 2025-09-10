@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { DashboardLayout } from '@/components/layout/dashboard-layout'
 import { RevenueChart } from '@/components/charts/revenue-chart'
 import { CategoryChart } from '@/components/charts/category-chart'
@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge'
 import { Package, DollarSign, Percent, TrendingUp, BarChart3 } from 'lucide-react'
 import { toast } from 'sonner'
 import { useBrandFilter } from '@/hooks/use-brand-filter'
+import { Category } from '@prisma/client'
 
 const categoryLabels = {
   SNEAKERS: 'Sneakers',
@@ -46,7 +47,7 @@ interface DashboardStats {
     newProducts: { value: number; percentage: number; isPositive: boolean }
   }
   topCategories: Array<{
-    category: string
+    category: Category
     count: number
     revenue: number
   }>

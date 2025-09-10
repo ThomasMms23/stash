@@ -7,7 +7,7 @@ import { prisma } from '@/lib/prisma'
 import { env } from '@/lib/env'
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma) as any,
   providers: [
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
@@ -72,7 +72,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.role = user.role
         // Si c'est une connexion avec "Se souvenir de moi", définir une durée plus longue
-        if (user.rememberMe) {
+        if ((user as any).rememberMe) {
           token.maxAge = 365 * 24 * 60 * 60 // 1 an
         } else {
           token.maxAge = 30 * 24 * 60 * 60 // 30 jours
@@ -90,6 +90,5 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/signin',
-    signUp: '/auth/signup',
   },
 }

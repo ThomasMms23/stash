@@ -3,7 +3,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp, TrendingDown, Minus, Info } from 'lucide-react'
-import { formatCurrency, formatNumber, formatVariation, getPeriodDates, PeriodType } from '@/lib/period-utils'
+import { formatCurrency, formatNumber, formatVariation, getPeriodDates } from '@/lib/period-utils'
+import { PeriodType } from '@/components/ui/period-selector'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 
 interface KPICardProps {

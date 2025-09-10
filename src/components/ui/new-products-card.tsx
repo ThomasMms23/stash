@@ -5,7 +5,8 @@ import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { Package, Plus } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { PeriodType, getPeriodDates } from '@/lib/period-utils'
+import { getPeriodDates } from '@/lib/period-utils'
+import { PeriodType } from '@/components/ui/period-selector'
 
 interface NewProductsCardProps {
   newProducts: number

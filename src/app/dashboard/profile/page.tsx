@@ -272,7 +272,14 @@ export default function ProfilePage() {
 
                 {/* Actions */}
                 <div className="flex gap-3">
-                  <EditProfileModal user={userProfile || user} onSave={handleSaveProfile}>
+                  <EditProfileModal 
+                    user={{
+                      name: (userProfile || user).name || '',
+                      email: (userProfile || user).email || '',
+                      avatar: null // Pas d'avatar pour l'instant
+                    }} 
+                    onSave={handleSaveProfile}
+                  >
                     <Button>
                       <Edit className="h-4 w-4 mr-2" />
                       Modifier les infos

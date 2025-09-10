@@ -39,6 +39,7 @@ import { BrandChart } from '@/components/charts/brand-chart'
 import { formatCurrency } from '@/lib/period-utils'
 import { toast } from 'sonner'
 import { exportToCSV, exportToPDF, ExportData, categoryLabels } from '@/lib/export-utils'
+import { Category } from '@prisma/client'
 
 interface AnalyticsData {
   period: string
@@ -63,7 +64,7 @@ interface AnalyticsData {
     newProducts: { value: number; percentage: number; isPositive: boolean }
   }
   topCategories: Array<{
-    category: string
+    category: Category
     count: number
     revenue: number
   }>

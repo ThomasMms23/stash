@@ -57,6 +57,8 @@ export async function GET(request: NextRequest) {
       totalRevenue: currentPeriodProducts.reduce((sum, product) => sum + product.sellingPrice, 0),
       totalCost: currentPeriodProducts.reduce((sum, product) => sum + product.purchasePrice, 0),
       newProducts: newProductsCurrentPeriod.length, // Nouveaux produits de la période
+      totalProfit: 0, // Sera calculé ci-dessous
+      averageMargin: 0, // Sera calculé ci-dessous
     }
     currentStats.totalProfit = currentStats.totalRevenue - currentStats.totalCost
     currentStats.averageMargin = currentPeriodProducts.length > 0 
@@ -69,6 +71,7 @@ export async function GET(request: NextRequest) {
       totalRevenue: previousPeriodProducts.reduce((sum, product) => sum + product.sellingPrice, 0),
       totalCost: previousPeriodProducts.reduce((sum, product) => sum + product.purchasePrice, 0),
       newProducts: newProductsPreviousPeriod.length,
+      totalProfit: 0, // Sera calculé ci-dessous
     }
     previousStats.totalProfit = previousStats.totalRevenue - previousStats.totalCost
 

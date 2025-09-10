@@ -5,9 +5,7 @@ import { Category, ProductStatus, TransactionType } from '@prisma/client'
 export const createProductSchema = z.object({
   name: z.string().min(1, 'Le nom est requis').max(100, 'Le nom ne peut pas dépasser 100 caractères'),
   description: z.string().max(500, 'La description ne peut pas dépasser 500 caractères').optional(),
-  category: z.nativeEnum(Category, {
-    errorMap: () => ({ message: 'Catégorie invalide' })
-  }),
+  category: z.nativeEnum(Category),
   brand: z.string().min(1, 'La marque est requise').max(50, 'La marque ne peut pas dépasser 50 caractères'),
   size: z.string().max(20, 'La taille ne peut pas dépasser 20 caractères').optional(),
   purchasePrice: z.number().positive('Le prix d\'achat doit être positif'),
@@ -34,9 +32,7 @@ export const productFiltersSchema = z.object({
 
 // Schémas pour les transactions
 export const createTransactionSchema = z.object({
-  type: z.nativeEnum(TransactionType, {
-    errorMap: () => ({ message: 'Type de transaction invalide' })
-  }),
+  type: z.nativeEnum(TransactionType),
   amount: z.number().positive('Le montant doit être positif'),
   quantity: z.number().int().positive('La quantité doit être un entier positif').default(1),
   notes: z.string().max(500, 'Les notes ne peuvent pas dépasser 500 caractères').optional(),

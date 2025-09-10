@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, NotificationType } from '@prisma/client'
 import { hash } from 'bcryptjs'
 
 // Import des enums depuis le schema Prisma
@@ -440,35 +440,35 @@ async function seedDemoData() {
       {
         title: 'Stock faible',
         message: 'Yeezy Boost 350 V2 Beluga - Stock faible (1 unité restante)',
-        type: 'LOW_STOCK',
+        type: NotificationType.LOW_STOCK,
         userId: demoUser.id,
         isRead: false,
       },
       {
         title: 'Nouveau produit ajouté',
         message: 'Yeezy 700 Wave Runner ajouté à votre inventaire',
-        type: 'NEW_PRODUCT',
+        type: NotificationType.NEW_PRODUCT,
         userId: demoUser.id,
         isRead: false,
       },
       {
         title: 'Vente finalisée',
         message: 'iPad Air 5th Gen vendu pour 280€',
-        type: 'SALE_COMPLETED',
+        type: NotificationType.SALE_COMPLETED,
         userId: demoUser.id,
         isRead: true,
       },
       {
         title: 'Vente finalisée',
         message: 'Off-White Caravaggio Hoodie vendu pour 580€',
-        type: 'SALE_COMPLETED',
+        type: NotificationType.SALE_COMPLETED,
         userId: demoUser.id,
         isRead: true,
       },
       {
         title: 'Nouveau produit ajouté',
         message: 'Fear of God Essentials Hoodie ajouté à votre inventaire',
-        type: 'NEW_PRODUCT',
+        type: NotificationType.NEW_PRODUCT,
         userId: demoUser.id,
         isRead: false,
       },

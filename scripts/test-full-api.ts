@@ -54,6 +54,7 @@ async function testFullAPI() {
       totalSales: currentPeriodProducts.length,
       totalRevenue: currentPeriodProducts.reduce((sum, product) => sum + product.sellingPrice, 0),
       totalCost: currentPeriodProducts.reduce((sum, product) => sum + product.purchasePrice, 0),
+      totalProfit: 0, // Sera calculé ci-dessous
     }
     currentStats.totalProfit = currentStats.totalRevenue - currentStats.totalCost
     

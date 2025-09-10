@@ -2,8 +2,7 @@
 
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts'
 import { formatCurrency } from '@/lib/period-utils'
-
-type Category = 'SNEAKERS' | 'CLOTHING' | 'ACCESSORIES' | 'ELECTRONICS' | 'COLLECTIBLES' | 'OTHER'
+import { Category } from '@prisma/client'
 
 interface CategoryData {
   category: Category
